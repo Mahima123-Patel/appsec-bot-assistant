@@ -1,0 +1,28 @@
+[
+  {
+    "ticket_id": "JIRA-001",
+    "risk": "Critical",
+    "vulnerability_type": "XSS",
+    "status": "Open",
+    "comments": [
+      {
+        "author": "developer1",
+        "text": "Need help with remediation for this XSS issue.",
+        "timestamp": "2025-07-11T12:00:00"
+      }
+    ]
+  },
+  {
+    "ticket_id": "JIRA-002",
+    "risk": "High",
+    "vulnerability_type": "SQLi",
+    "status": "Open",
+    "comments": [
+      {
+        "author": "developer2",
+        "text": "This has been fixed. Please check.",
+        "timestamp": "2025-07-11T13:00:00"
+      }
+    ]
+  }
+]
