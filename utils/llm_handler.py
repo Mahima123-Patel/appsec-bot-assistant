@@ -14,21 +14,6 @@ def get_remediation_response(vuln_type, comment_text):
 
 
 
-# from transformers import pipeline
-
-# # Light, fast model (loads quickly and works great)
-# qa_model = pipeline("text2text-generation", model="google/flan-t5-base")
-
-# def get_remediation_response(vuln_type, comment_text):
-#     prompt = f"Remediation advice for {vuln_type}. Developer said: {comment_text}"
-#     try:
-#         result = qa_model(prompt, max_length=100)[0]['generated_text']
-#         return result
-#     except Exception as e:
-#         return f"Error using Hugging Face model: {e}"
-
-
-
 # import openai
 # import os
 # from dotenv import load_dotenv

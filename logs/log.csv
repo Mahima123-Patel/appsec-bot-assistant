@@ -1,0 +1,13 @@
+ticket_id,comment_type,status,timestamp
+JIRA-001,LLM-response,,2025-07-13 18:36:06
+JIRA-002,Fixed,In Testing,2025-07-13 18:36:06
+JIRA-001,Fixed,In Testing,2025-07-13 18:50:05
+JIRA-002,Fixed,In Testing,2025-07-13 18:50:05
+JIRA-001,Initial-response,,2025-07-13 19:09:36
+JIRA-001,Fixed,In Testing,2025-07-13 19:09:36
+JIRA-002,Initial-response,,2025-07-13 19:09:36
+JIRA-002,Fixed,In Testing,2025-07-13 19:09:36
+JIRA-001,Initial-response,,2025-07-13 19:13:14
+JIRA-001,Fixed,In Testing,2025-07-13 19:13:14
+JIRA-002,Initial-response,,2025-07-13 19:13:14
+JIRA-002,Fixed,In Testing,2025-07-13 19:13:14
