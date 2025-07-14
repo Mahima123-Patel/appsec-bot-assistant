@@ -30,48 +30,58 @@ def log_action(ticket_id, comment_type, status=None):
 # -------------------------------
 # 3. Handle a single ticket comment
 # -------------------------------
-def handle_comment(ticket, last_handled_timestamp=None):
+def handle_comments(ticket, last_handled_timestamp=None):
+    """
+    Process every ticket comment newer than last_handled_timestamp,
+    in chronological order.
+    Returns the timestamp of the newest comment handled.
+    """
     ticket_id = ticket["ticket_id"]
     vuln_type = ticket["vulnerability_type"]
-    comments = ticket["comments"]
-    latest_comment = comments[-1]
-    latest_text = latest_comment["text"]
-    latest_time = latest_comment["timestamp"]
-    time.sleep(1.5) 
-    print(f"\n\U0001F39F️ Ticket: {ticket_id}")
-    time.sleep(1.5)  
-    print(f"\U0001F4DD Latest Comment: {latest_text}")
-    time.sleep(1.5)  # simulate reading
+    comments = sorted(ticket["comments"], key=lambda c: c["timestamp"])
+    newest_time = last_handled_timestamp
 
-    if last_handled_timestamp == latest_time:
-        print("\u23ED\uFE0F Bot: No new comment to handle.")
-        return last_handled_timestamp
+    for comment in comments:
+        ts = comment["timestamp"]
+        if last_handled_timestamp is not None and ts <= last_handled_timestamp:
+            continue  # already handled
 
-    print("💬 Bot: Hi team, AppSec team is reviewing the comment and will get back shortly..")
-    log_action(ticket_id, "Initial-response")
-    time.sleep(1.5)  # simulate delay before decision
+        text = comment["text"]
+        time.sleep(1)
+        print(f"\n🎟️ Ticket: {ticket_id}")
+        print(f"📝 Comment ({ts}): {text}")
+        time.sleep(1)
 
-    if "Need help" in latest_text:
-        print("\U0001F916 Bot: Generating response using Hugging Face model...")
-        time.sleep(2)  # simulate LLM thinking
-        response = get_remediation_response(vuln_type, latest_text)
-        print(f"\U0001F4AC LLM Response:\n{response}")
-        log_action(ticket_id, "LLM-response")
+        # Initial “we’re looking” response
+        print("💬 Bot: Hi team, AppSec team is reviewing the comment and will get back shortly..")
+        log_action(ticket_id, "Initial-response")
+        time.sleep(1)
 
-    elif any(kw in latest_text.lower() for kw in ["fixed", "resolved", "done", "closed", "issue is resolved"]):
-        time.sleep(1.5)  # simulate thinking before action
-        update_ticket_status(ticket, "In Testing")
-        print("\u2705 Bot: Status updated to 'In Testing'.")
-        log_action(ticket_id, "Fixed", "In Testing")
+        # Decide how to respond
+        if "need help" in text.lower():
+            print("🤖 Bot: Generating remediation via LLM…")
+            time.sleep(2)
+            resp = get_remediation_response(vuln_type, text)
+            print(f"💬 LLM Response:\n{resp}")
+            log_action(ticket_id, "LLM-response")
 
-    else:
-        print("\U0001F916 Bot: Posting default template...")
-        template = get_bot_template(vuln_type)
-        print(f"\U0001F4AC Template Response: {template}")
-        log_action(ticket_id, "Template-response")
+        elif any(kw in text.lower() for kw in ["fixed", "resolved", "done", "closed"]):
+            time.sleep(1)
+            update_ticket_status(ticket, "In Testing")
+            print("✅ Bot: Status updated to 'In Testing'.")
+            log_action(ticket_id, "Fixed", "In Testing")
 
-    print("\U0001F4CC Status:", ticket["status"])
-    return latest_time
+        else:
+            print("🤖 Bot: Posting default template…")
+            tpl = get_bot_template(vuln_type)
+            print(f"💬 Template Response: {tpl}")
+            log_action(ticket_id, "Template-response")
+
+        print(f"📌 New Status: {ticket['status']}")
+        newest_time = ts
+        time.sleep(1)
+
+    return newest_time
 
 # -------------------------------
 # 4. Simulated Polling Loop
@@ -88,7 +98,7 @@ def main():
     for ticket in tickets:
         if ticket["risk"] in ["High", "Critical"]:
             last_seen = ticket_states.get(ticket["ticket_id"])
-            new_seen = handle_comment(ticket, last_seen)
+            new_seen = handle_comments(ticket, last_seen)
             ticket_states[ticket["ticket_id"]] = new_seen
 
     print("\n\u2705 Polling cycle complete.")

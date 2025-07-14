@@ -6,7 +6,7 @@ qa_model = pipeline("text2text-generation", model="google/flan-t5-base")
 def get_remediation_response(vuln_type, comment_text):
     prompt = f"How can I fix a {vuln_type} vulnerability?"
     try:
-        result = qa_model(prompt, max_length=100)[0]['generated_text']
+        result = qa_model(prompt, max_new_tokens=100)[0]['generated_text']
         return result.strip()
     except Exception as e:
         return f"Error using Hugging Face model: {e}"

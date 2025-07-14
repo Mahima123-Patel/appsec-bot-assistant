@@ -32,7 +32,7 @@
   {
     "ticket_id": "JIRA-005",
     "author": "developer5",
-    "text": "I don’t know if this SQLi can be exploited, but it looks risky.",
+    "text": "I do not know if this SQLi can be exploited, but it looks risky.",
     "timestamp": "2025-07-13T11:30:00"
   },
   {
