@@ -1,5 +1,6 @@
 import json
 import csv
+import time
 from datetime import datetime
 from utils.llm_handler import get_remediation_response
 from utils.jira_handler import load_tickets, update_ticket_status, load_new_comments, merge_comments_into_tickets
@@ -36,9 +37,11 @@ def handle_comment(ticket, last_handled_timestamp=None):
     latest_comment = comments[-1]
     latest_text = latest_comment["text"]
     latest_time = latest_comment["timestamp"]
-
+    time.sleep(1.5) 
     print(f"\n\U0001F39F️ Ticket: {ticket_id}")
+    time.sleep(1.5)  
     print(f"\U0001F4DD Latest Comment: {latest_text}")
+    time.sleep(1.5)  # simulate reading
 
     if last_handled_timestamp == latest_time:
         print("\u23ED\uFE0F Bot: No new comment to handle.")
@@ -46,14 +49,17 @@ def handle_comment(ticket, last_handled_timestamp=None):
 
     print("💬 Bot: Hi team, AppSec team is reviewing the comment and will get back shortly..")
     log_action(ticket_id, "Initial-response")
-    
+    time.sleep(1.5)  # simulate delay before decision
+
     if "Need help" in latest_text:
         print("\U0001F916 Bot: Generating response using Hugging Face model...")
+        time.sleep(2)  # simulate LLM thinking
         response = get_remediation_response(vuln_type, latest_text)
         print(f"\U0001F4AC LLM Response:\n{response}")
         log_action(ticket_id, "LLM-response")
 
-    elif "fixed" in latest_text.lower():
+    elif any(kw in latest_text.lower() for kw in ["fixed", "resolved", "done", "closed", "issue is resolved"]):
+        time.sleep(1.5)  # simulate thinking before action
         update_ticket_status(ticket, "In Testing")
         print("\u2705 Bot: Status updated to 'In Testing'.")
         log_action(ticket_id, "Fixed", "In Testing")

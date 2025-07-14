@@ -2,7 +2,43 @@
   {
     "ticket_id": "JIRA-001",
     "author": "developer1",
-    "text": "This has been fixed.",
+    "text": "Need help with remediation for this XSS issue.",
+    "timestamp": "2025-07-13T09:00:00"
+  },
+  {
+    "ticket_id": "JIRA-001",
+    "author": "developer1",
+    "text": "Thanks, issue resolved now.",
+    "timestamp": "2025-07-13T10:30:00"
+  },
+  {
+    "ticket_id": "JIRA-002",
+    "author": "developer2",
+    "text": "Please help me patch this SQLi bug.",
+    "timestamp": "2025-07-13T10:00:00"
+  },
+  {
+    "ticket_id": "JIRA-003",
+    "author": "developer3",
+    "text": "I accidentally pushed a token to GitHub. How do I clean it up?",
+    "timestamp": "2025-07-13T10:15:00"
+  },
+  {
+    "ticket_id": "JIRA-004",
+    "author": "developer4",
+    "text": "I have fixed the reflected XSS in the login page.",
+    "timestamp": "2025-07-13T11:00:00"
+  },
+  {
+    "ticket_id": "JIRA-005",
+    "author": "developer5",
+    "text": "I don’t know if this SQLi can be exploited, but it looks risky.",
+    "timestamp": "2025-07-13T11:30:00"
+  },
+  {
+    "ticket_id": "JIRA-005",
+    "author": "developer5",
+    "text": "Issue now resolved with a new prepared statement.",
     "timestamp": "2025-07-13T12:00:00"
   }
 ]
